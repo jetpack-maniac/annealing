@@ -10,7 +10,7 @@ class Solution:
     def __init__(self, point_indices: np.ndarray) -> None:
         self.point_indices = point_indices
         self.dist = None
-        self.perf_time = None
+        self.perf_time_ns = None
 
     def calculate_distance(self, points: np.ndarray) -> float:
         reordered_points = points[self.point_indices]
