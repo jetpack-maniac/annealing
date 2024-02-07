@@ -3,6 +3,7 @@
 # Python Modules
 from random import randint, random
 from math import e
+from time import perf_counter
 
 # Third-Party Modules
 import numpy as np
@@ -17,6 +18,7 @@ class Solver:
         self.point_count = point_count
         self.temp = temp
         self.temp_mult_factor = temp_mult_factor
+        self.perf_time = None
 
         self.points = np.zeros((point_count*2,), dtype=np.int64)
         point_indices = np.zeros((point_count,), dtype=np.int64)
@@ -37,7 +39,7 @@ class Solver:
         while self.temp > min_temp and total_iterations < max_iterations:
             self.solve_step()
             self.temp = self.temp * self.temp_mult_factor
-            total_iterations = total_iterations + 1
+            total_iterations += 1
 
     def solve_step(self, print_status: bool = False):
         moves_to_attempt = 100 * self.point_count
@@ -49,9 +51,11 @@ class Solver:
             index2 = randint(index1+1, self.point_count)
 
             clone = self.current_solution.clone()
+            start_time = perf_counter()
             clone.reverse_segment(index1, index2)
             new_dist = clone.calculate_distance(self.points)
             cost = new_dist - self.current_solution.dist
+            clone.perf_time = perf_counter() - start_time
 
             if not self.should_replace(cost):
                 continue
