@@ -18,16 +18,18 @@ def draw_map(title: str, points: list[tuple], point_indices: list[int]) -> None:
 
     plt.show()
         
-def solve():
-    solver = Solver()
-    solver.solve()
+def solve(point_count: int = 20, map_size: int = 10, temp: int = 10000,
+          temp_mult_factor: float = 0.98, max_iterations: int = 1000,
+          min_temp: float = 0.5) -> Solver:
+    solver = Solver(point_count, map_size, temp, temp_mult_factor)
+    solver.solve(max_iterations, min_temp)
+    return solver
     draw_map('Before', solver.points, solver.current_solution.point_indices)
     print(solver.current_solution.point_indices)
     print(solver.best_solution.point_indices)
     draw_map('Current', solver.points, solver.current_solution.point_indices)
     input('Ready')
     draw_map('Best', solver.points, solver.best_solution.point_indices)
-
 
 def test():
     solver = Solver(5)
@@ -36,3 +38,6 @@ def test():
     print(solver.current_solution.point_indices)
     output = solver.current_solution.calculate_distance(solver.points)
     print(output)
+
+if __name__ == '__main__':
+    solve()
