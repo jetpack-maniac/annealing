@@ -2,17 +2,13 @@ from __future__ import annotations
 import matplotlib.pyplot as plt
 
 # Local
-from pyannealing import Solver
+from pyannealing import Solver, Solution
 
 from numpy import ndarray
 
 # Jupyter
 from IPython.display import clear_output
 
-def draw_maps(solver: Solver):
-    clear_output(wait=True)
-    draw_map(f'Current: {solver.current_solution.dist}', solver.points, solver.current_solution.point_indices)
-    draw_map(f'Best: {solver.best_solution.dist}', solver.points, solver.best_solution.point_indices)
 
 def draw_map(title: str, points: ndarray, point_indices: ndarray) -> None:
     ordered_points = [points[i] for i in point_indices]
@@ -28,3 +24,13 @@ def draw_map(title: str, points: ndarray, point_indices: ndarray) -> None:
     plt.title(title)
 
     plt.show()
+
+
+def draw_solution_map(solution: Solution, solver: Solver, title: str) -> None:
+    draw_map(f'{title}: {solution.dist}', solver.points, solution.point_indices)
+
+def draw_maps(solver: Solver):
+    clear_output(wait=True)
+    draw_solution_map(solver.current_solution, solver, 'Current')
+    draw_solution_map(solver.best_solution, solver, 'Best')
+    draw_solution_map(solver.worst_solution, solver, 'Worst')
