@@ -5,10 +5,10 @@ from pyannealing.classes.solver import Solver
 
 def solve(point_count: int = 20, map_size: int = 10, temp: int = 10000,
           temp_mult_factor: float = 0.98, max_iterations: int = 1000,
-          min_temp: float = 0.5) -> Solver:
+          min_temp: float = 0.5, print_status: bool = False) -> Solver:
     start_time = perf_counter()
     solver = Solver(point_count, map_size, temp, temp_mult_factor)
-    solver.solve(max_iterations, min_temp)
+    solver.solve(max_iterations, min_temp, print_status)
     solver.perf_time = perf_counter() - start_time
     return solver
 
@@ -21,4 +21,5 @@ def test():
     print(output)
 
 if __name__ == '__main__':
-    solve()
+    solver = solve(print_status=False)
+    print(solver.history)
